@@ -1,11 +1,12 @@
+import pytest
 from pages.saucedemo_login_page import SauceDemoLoginPage
-from config.config import USERNAME, PASSWORD
+from test_data.test_data import LOGIN_USERNAME, LOGIN_PASSWORD
 from utils.logger import get_logger
 
 
 logger = get_logger(__name__)
 
-
+@pytest.mark.smoke
 def test_saucedemo_login(page):
     logger.info("Start SauceDemo login test")
 
@@ -13,7 +14,7 @@ def test_saucedemo_login(page):
     login_page.open()
     logger.info("Opened SauceDemo login page")
 
-    login_page.login(USERNAME, PASSWORD)
+    login_page.login(LOGIN_USERNAME, LOGIN_PASSWORD)
     logger.info("Submitted login credentials")
 
     login_page.wait_for_url_contains("inventory")

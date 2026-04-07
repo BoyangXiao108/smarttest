@@ -10,3 +10,6 @@ class SauceDemoLoginPage(BasePage):
         self.fill('[data-test="username"]', username)
         self.fill('[data-test="password"]', password)
         self.page.locator('[data-test="login-button"]').click()
+
+    def error_message(self):
+        return self.page.locator('[data-test="error"]').text_content()
