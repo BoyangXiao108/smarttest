@@ -15,6 +15,7 @@ from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+
 @pytest.mark.smoke
 def test_saucedemo_checkout(page):
     logger.info("Start checkout test")
@@ -27,15 +28,20 @@ def test_saucedemo_checkout(page):
     login_page.open()
     login_page.login(LOGIN_USERNAME, LOGIN_PASSWORD)
     login_page.wait_for_url_contains("inventory")
+    logger.info("Login succeeded")
 
     inventory_page.add_backpack_to_cart()
+    logger.info("Added backpack to cart")
+
     inventory_page.open_cart()
     cart_page.wait_for_url_contains("cart")
+    logger.info("Opened cart page")
 
     assert cart_page.cart_item_count() == 1
 
     cart_page.click_checkout()
     checkout_page.wait_for_url_contains("checkout-step-one")
+    logger.info("Opened checkout step one")
 
     checkout_page.fill_checkout_info(
         CHECKOUT_FIRST_NAME,
@@ -43,5 +49,10 @@ def test_saucedemo_checkout(page):
         CHECKOUT_POSTAL_CODE,
     )
     checkout_page.wait_for_url_contains("checkout-step-two")
+    logger.info("Checkout info submitted successfully")
 
-    assert "checkout-step-two" in checkout_page.get_url().lower()
+    checkout_page.click_finish()
+    checkout_page.wait_for_url_contains("checkout-complete")
+    logger.info("Checkout completed successfully")
+
+    assert "thank you for your order" in checkout_page.complete_header_text().lower()

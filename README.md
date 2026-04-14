@@ -1,328 +1,196 @@
-# SmartTest — UI Test Automation Framework
+# SmartTest --- Test Automation Framework
 
-A production-style UI test automation framework built with **Python**, **Pytest**, and **Playwright**, designed to simulate real-world software testing workflows.
-The framework implements **Page Object Model (POM)** architecture, structured logging, HTML reporting, failure screenshots, and CI integration using **GitHub Actions**.
+A production-style test automation framework built with **Python**,
+**Pytest**, and **Playwright**, designed to simulate real-world QA and
+SDET workflows.
 
-This project demonstrates end-to-end automated test coverage for a sample e-commerce application and follows common practices used in QA / SDET environments.
+The framework supports both **UI and API testing**, parallel execution,
+automatic retry for flaky tests, structured logging, HTML and coverage
+reporting, Docker-based execution, and CI integration using **GitHub
+Actions**.
 
----
+This project demonstrates end-to-end automated test coverage for a
+sample e-commerce application and follows common engineering practices
+used in modern test automation environments.
+
+------------------------------------------------------------------------
 
 # Tech Stack
 
-* Python 3.12
-* Pytest
-* Playwright
-* Page Object Model (POM)
-* GitHub Actions (CI)
-* HTML Reports
-* Logging
-* Screenshots on Failure
+-   Python 3.12\
+-   Pytest\
+-   Playwright\
+-   Requests (API testing)\
+-   Page Object Model (POM)\
+-   Pytest-xdist (parallel execution)\
+-   Pytest-rerunfailures (retry logic)\
+-   Pytest-cov (coverage reporting)\
+-   Docker\
+-   GitHub Actions (CI)
 
----
-
-# Project Structure
-
-```
-smarttest/
-│
-├── pages/
-│   ├── base_page.py
-│   ├── saucedemo_login_page.py
-│   ├── saucedemo_inventory_page.py
-│   ├── saucedemo_cart_page.py
-│   └── saucedemo_checkout_page.py
-│
-├── tests/
-│   ├── test_google_search.py
-│   ├── test_saucedemo_login.py
-│   ├── test_saucedemo_invalid_login.py
-│   ├── test_saucedemo_add_to_cart.py
-│   ├── test_saucedemo_remove_from_cart.py
-│   └── test_saucedemo_checkout.py
-│
-├── utils/
-│   └── logger.py
-│
-├── test_data/
-│   └── test_data.py
-│
-├── reports/
-│   ├── report.html
-│   └── screenshots/
-│
-├── pytest.ini
-├── requirements.txt
-└── README.md
-```
-
----
+------------------------------------------------------------------------
 
 # Key Features
 
-## Page Object Model (POM)
+## UI and API Test Automation
 
-Encapsulates UI elements and actions into reusable page classes to improve:
+The framework supports:
 
-* Maintainability
-* Readability
-* Scalability
-* Test stability
+-   UI automation using Playwright
+-   API testing using Requests
+-   Unified execution using Pytest
 
 Example:
 
-```
-login_page.login(username, password)
-inventory_page.add_backpack_to_cart()
-checkout_page.click_finish()
-```
+    pytest
 
----
+This runs:
 
-## Smoke and Regression Test Suites
+-   UI test suites
+-   API tests
+-   Coverage reporting
+-   HTML reporting
+-   Parallel execution
+-   Retry logic
 
-Tests are organized using Pytest markers.
+------------------------------------------------------------------------
 
-Smoke tests:
+## Parallel Test Execution
 
-```
-pytest -m smoke
-```
+Tests run concurrently using:
 
-Regression tests:
+    pytest -n 2
 
-```
-pytest -m regression
-```
+Benefits:
 
-Example marker:
+-   Faster regression cycles\
+-   Real-world CI performance simulation
 
-```
-@pytest.mark.smoke
-def test_saucedemo_login(page):
-```
+------------------------------------------------------------------------
 
----
+## Retry Mechanism for Flaky Tests
 
-## Logging
+Automatically reruns failed tests:
 
-Structured logging helps debugging and traceability.
+    --reruns 1
 
-Example log output:
+Benefits:
 
-```
-INFO - Start SauceDemo login test
-INFO - Opened SauceDemo login page
-INFO - Submitted login credentials
-INFO - Login succeeded
-```
+-   Improved stability\
+-   Reduced false failures
 
-Logger location:
+------------------------------------------------------------------------
 
-```
-utils/logger.py
-```
+## Test Coverage Reporting
 
----
+Code coverage is automatically generated:
 
-## HTML Test Report
-
-Automatically generated after each test run.
-
-Command:
-
-```
-pytest --html=reports/report.html --self-contained-html
-```
+    pytest
 
 Output:
 
-```
-reports/report.html
-```
+    reports/coverage/index.html
 
-The report includes:
+Current coverage:
 
-* Test results
-* Execution time
-* Pass / Fail status
-* Failure details
+    98%
 
----
+------------------------------------------------------------------------
 
-## Screenshot on Failure
+## Docker-Based Test Execution
 
-Automatically captures screenshots when a test fails.
+Build:
 
-Saved to:
+    docker build -t smarttest .
 
-```
-reports/screenshots/
-```
+Run:
 
-This behavior simulates production QA debugging workflows.
+    docker run --rm smarttest
 
----
+Benefits:
+
+-   Environment consistency\
+-   CI compatibility\
+-   Production-style execution
+
+------------------------------------------------------------------------
+
+# Project Structure
+
+    smarttest/
+    │
+    ├── pages/
+    ├── tests/
+    ├── utils/
+    ├── test_data/
+    ├── reports/
+    ├── Dockerfile
+    ├── pytest.ini
+    ├── requirements.txt
+    └── README.md
+
+------------------------------------------------------------------------
 
 # Test Scenarios Covered
 
-The framework includes automated UI tests for the following user flows:
+UI workflows:
 
-* Google search validation
-* User login
-* Invalid login
-* Add item to cart
-* Remove item from cart
-* Checkout process
-* Order completion confirmation
+-   User login\
+-   Invalid login\
+-   Add item to cart\
+-   Remove item from cart\
+-   Checkout process
 
-Example checkout flow:
+API workflows:
 
-```
-Login
-→ Add product
-→ Open cart
-→ Checkout
-→ Fill information
-→ Complete order
-→ Verify success message
-```
+-   Retrieve post data
+-   Validate JSON response structure
+-   Validate response status
 
----
+------------------------------------------------------------------------
 
 # Installation
 
-Clone the repository:
+Clone repository:
 
-```
-git clone https://github.com/BoyangXiao108/smarttest.git
-cd smarttest
-```
+    git clone https://github.com/BoyangXiao108/smarttest.git
+    cd smarttest
 
 Create virtual environment:
 
-```
-python3.12 -m venv .venv
-source .venv/bin/activate
-```
+    python3.12 -m venv .venv
+    source .venv/bin/activate
 
 Install dependencies:
 
-```
-pip install -r requirements.txt
-```
+    pip install -r requirements.txt
 
-Install Playwright browser:
+Install browser:
 
-```
-playwright install
-```
+    playwright install
 
----
+------------------------------------------------------------------------
 
 # Run Tests
 
 Run all tests:
 
-```
-pytest
-```
+    pytest
 
-Run smoke tests only:
+Run in parallel:
 
-```
-pytest -m smoke
-```
+    pytest -n 2
 
-Run regression tests:
+Run with Docker:
 
-```
-pytest -m regression
-```
+    docker build -t smarttest .
+    docker run --rm smarttest
 
-Run tests with HTML report:
-
-```
-pytest --html=reports/report.html --self-contained-html
-```
-
----
-
-# Continuous Integration (CI)
-
-GitHub Actions automatically runs smoke tests on:
-
-* push
-* pull request
-
-Workflow file:
-
-```
-.github/workflows/tests.yml
-```
-
-CI performs:
-
-* dependency installation
-* browser setup
-* test execution
-* report generation
-* artifact upload
-
-This simulates real-world automated testing pipelines.
-
----
-
-# Example CI Workflow
-
-```
-Push code
-    ↓
-GitHub Actions triggered
-    ↓
-Install dependencies
-    ↓
-Run smoke tests
-    ↓
-Generate report
-    ↓
-Upload artifacts
-```
-
----
-
-# Future Improvements
-
-Potential enhancements:
-
-* Parallel test execution
-* Test retry mechanism
-* API testing integration
-* Docker test environment
-* Test data parameterization
-* Allure reporting
-* Performance testing
-* Headless execution optimization
-
----
+------------------------------------------------------------------------
 
 # Author
 
-Boyang Xiao
-Master of Science in Computer Science
-Boston University
+Boyang Xiao\
+Master of Science in Computer Science\
+Boston University\
 Expected Graduation: May 2026
-
----
-
-# Purpose of This Project
-
-This project demonstrates practical experience in:
-
-* Software testing
-* Test automation
-* Framework design
-* CI/CD workflows
-* Debugging and reporting
-* Maintainable test architecture
-
-It is intended to showcase real-world engineering practices for entry-level QA, SDET, and automation roles.
